@@ -1,1 +1,12 @@
-{"stars":4.0,"review":"Loving this place! The staff is always friendly and the food never disappoints. Definitely coming back."}
+{
+    "target_user": "_BcWyKQL16ndpBdggh2kNA",
+    "target_item": "uBDXcXlLR9IuRV1N2m0SPQ",
+    "ground_truth": {
+        "stars": 4.0,
+        "review": "Pho, summer rolls, iced coffee, vermicelli, broken rice plates, all the staples in a quick-service format. Mid-priced and great for lunch. Come right when they open at 11:30 to beat the lunch rush.\n\nNew digs with a clean restroom. For now."
+    },
+    "prediction": {
+        "stars": 4.5,
+        "review": "As a frequent patron and someone who consistently appreciates the cost-effective dining options of 'uBDXcXlLR9IuRV1N2m0SPQ', I must say that my experiences have largely been positive. The quick service is commendable, aligning with what I've come to expect from a reliable eatery like Pho."
+    }
+}

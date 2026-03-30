@@ -28,20 +28,27 @@ class MyProjectCrew():
         }
     }
 
-    # Tools defined as class attributes
+    #tools defined as class attributes
     user_tool = JSONSearchTool(
         json_path=os.path.join(data_dir, 'user_subset.json'),
+        name="search_user_demographics", # Unique name for user metadata
         collection_name='user_data_final',
         config=rag_config
     )
+    
+    #business/item Tool
     item_tool = JSONSearchTool(
         json_path=os.path.join(data_dir, 'item_subset.json'),
+        name="search_item_database",
         collection_name='item_data_final',
         config=rag_config
     )
+
+    #review history tool
     review_tool = JSONSearchTool(
         json_path=os.path.join(data_dir, 'review_subset.json'),
-        collection_name='review_data_final',
+        name="search_review_history",
+        collection_name='review_history_final',
         config=rag_config
     )
 
@@ -85,9 +92,12 @@ class MyProjectCrew():
 
     @crew
     def crew(self) -> Crew:
+        """Creates the MyProject crew"""
         return Crew(
             agents=self.agents,
             tasks=self.tasks,
             process=Process.sequential,
-            verbose=True
+            verbose=True,
+            #captures the internal chain-of-thought
+            output_log_file='training_trace.md', 
         )

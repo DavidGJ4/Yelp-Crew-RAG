@@ -1,10 +1,9 @@
 analyze_user_task:
   description: >
-    1. Use the {user_id} to query 'user_subset.json' and 'review_subset.json'.
-    2. Analyze the user's historical behavior: Do they give high or low ratings on average? 
-    3. Identify their writing style (e.g., short/brutal, long/descriptive, or emoji-heavy).
-    4. Note their favorite categories (e.g., Japanese food, Nightlife).
-    Refer to the Yelp Data Translation docs to understand field meanings.
+    1. Use the {user_id} to query 'review_subset.json'.
+    2. Focus ONLY on reviews for businesses OTHER than {item_id}. 
+    3. Determine the user's "Baseline": Do they usually give 5 stars to everything, or are they a tough critic?
+    4. Identify their "Style": Do they write one-sentence reviews or long essays?
   expected_output: >
     A detailed Markdown User Persona report summarizing the consumer's 
     preferences and historical rating bias.
@@ -23,14 +22,15 @@ analyze_item_task:
 
 predict_review_task:
   description: >
-    1. Synthesize the User Persona and the Business Evaluation.
-    2. Simulate how THIS specific user ({user_id}) would react to THIS specific business ({item_id}).
-    3. Predict the numerical Star Rating (1.0 to 5.0).
-    4. Write the Review Text in the exact 'voice' of the user.
+    1. Receive the Researcher's report on User {user_id} and Business {item_id}.
+    2. Review the Business's actual attributes (e.g., "Pho," "Quick service," "Clean restrooms").
+    3. Review the User's behavior (e.g., "Always mentions the price," "Values cleanliness").
+    4. COMBINE THEM: Write a review that discusses the ACTUAL features of the business through the ACTUAL lens of the user.
+    5. Ensure the "stars" matches the user's historical bias (e.g., if they are a harsh critic, a good experience might only be a 4.0, not a 5.0).
   expected_output: >
-    A JSON Object with exactly two fields:
-    "stars": [The predicted float or integer rating],
-    "review": "[The synthesized review text]"
+    A JSON object containing ONLY the following fields at the root level:
+    "stars": (float),
+    "review": (string).
+    Do not wrap the result in a parent key like 'YelpPrediction' or 'output'.
   agent: prediction_modeler
   context: [analyze_user_task, analyze_item_task]
-  output_file: 'report.json'
