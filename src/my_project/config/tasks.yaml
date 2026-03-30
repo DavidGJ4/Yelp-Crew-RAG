@@ -1,0 +1,36 @@
+analyze_user_task:
+  description: >
+    1. Use the {user_id} to query 'user_subset.json' and 'review_subset.json'.
+    2. Analyze the user's historical behavior: Do they give high or low ratings on average? 
+    3. Identify their writing style (e.g., short/brutal, long/descriptive, or emoji-heavy).
+    4. Note their favorite categories (e.g., Japanese food, Nightlife).
+    Refer to the Yelp Data Translation docs to understand field meanings.
+  expected_output: >
+    A detailed Markdown User Persona report summarizing the consumer's 
+    preferences and historical rating bias.
+  agent: user_profiler
+
+analyze_item_task:
+  description: >
+    1. Use the {item_id} to query 'item_subset.json' and 'review_subset.json'.
+    2. Identify the business's key characteristics: signature dishes, service quality, 
+       price range, and common complaints.
+    3. Look for "latent features" in existing reviews that define this business's 'vibe'.
+  expected_output: >
+    A detailed Markdown Business Evaluation report highlighting the 
+    strengths and weaknesses of the entity.
+  agent: item_analyst
+
+predict_review_task:
+  description: >
+    1. Synthesize the User Persona and the Business Evaluation.
+    2. Simulate how THIS specific user ({user_id}) would react to THIS specific business ({item_id}).
+    3. Predict the numerical Star Rating (1.0 to 5.0).
+    4. Write the Review Text in the exact 'voice' of the user.
+  expected_output: >
+    A JSON Object with exactly two fields:
+    "stars": [The predicted float or integer rating],
+    "review": "[The synthesized review text]"
+  agent: prediction_modeler
+  context: [analyze_user_task, analyze_item_task]
+  output_file: 'report.json'
